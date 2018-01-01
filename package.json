@@ -1,13 +1,16 @@
 {
   "name": "seven-generator",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "npm run lint",
     "lint": "./node_modules/.bin/eslint --fix /libs"
   },
-  "author": "",
+  "bin": {
+    "seven": "./index.js"
+  },
+  "author": "TalkWithKeyboard",
   "license": "ISC",
   "dependencies": {
     "bluebird": "^3.5.1",

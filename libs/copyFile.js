@@ -2,6 +2,10 @@ const fs = require('fs')
 const path = require('path')
 const Promise = require('bluebird')
 const _ = require('lodash')
+const fileNameReplace = {
+  '.gitignore*': '.gitignore',
+
+}
 
 /**
  * 复制文件
