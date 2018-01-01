@@ -74,7 +74,6 @@ const multiplyFilter = (baseName, tgtPath, option) => {
  * )
  */
 const searchAllFilesAndCopy = async (srcPath, tgtPath, blackList, option) => {
-  console.log(option)
   // 过滤黑名单文件
   if (_.filter(blackList, each => each !== path.basename(srcPath)).length !== blackList.length) {
     return
