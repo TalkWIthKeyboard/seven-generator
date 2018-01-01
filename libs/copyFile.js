@@ -47,6 +47,9 @@ const multiplyFilter = (baseName, tgtPath, option) => {
             ? path.join(dirName, splitList[0])
             : false
         break
+      case '.gitignore':
+          return path.join(dirName, splitList[0])
+        break
       // 继续添加规则
     }
   }
@@ -78,16 +81,14 @@ const searchAllFilesAndCopy = async (srcPath, tgtPath, blackList, option) => {
   if (_.filter(blackList, each => each !== path.basename(srcPath)).length !== blackList.length) {
     return
   }
-
+  const afterFilter = multiplyFilter(path.basename(srcPath), tgtPath, option)
   // 文件 直接复制
-  if (!fs.statSync(srcPath).isDirectory()) {
-    return copyFile(srcPath, tgtPath)
+  if (!fs.statSync(srcPath).isDirectory() && afterFilter) {
+    return copyFile(srcPath, afterFilter)
   }
-
   // 文件夹 创建文件夹,递归复制
   try {
     const files = fs.readdirSync(srcPath)
-    const afterFilter = multiplyFilter(path.basename(srcPath), tgtPath, option)
     if (afterFilter) {
       if (!fs.existsSync(afterFilter)) {
         fs.mkdirSync(afterFilter)
@@ -95,7 +96,6 @@ const searchAllFilesAndCopy = async (srcPath, tgtPath, blackList, option) => {
     } else {
       return
     }
-
     for (let index = 0; index < files.length; index++) {
       await searchAllFilesAndCopy(
         path.join(srcPath, files[index]),
