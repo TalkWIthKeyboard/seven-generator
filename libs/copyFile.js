@@ -50,6 +50,11 @@ const multiplyFilter = (baseName, tgtPath, option) => {
       case '.gitignore':
           return path.join(dirName, splitList[0])
         break
+      case 'package':
+          return splitList[1] === 'copy.json'
+            ? path.join(dirName, `${splitList[0]}.json`)
+            : false
+        break
       // 继续添加规则
     }
   }
@@ -109,4 +114,7 @@ const searchAllFilesAndCopy = async (srcPath, tgtPath, blackList, option) => {
   }
 }
 
-module.exports = searchAllFilesAndCopy
+module.exports = {
+  searchAllFilesAndCopy,
+  copyFile
+}

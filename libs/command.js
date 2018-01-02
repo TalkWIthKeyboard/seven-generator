@@ -1,5 +1,6 @@
-const cf = require('./copyFile')
-
+const path = require('path')
+const { searchAllFilesAndCopy } = require('./copyFile')
+const { changePackageJson } = require('./fileChange')
 const blackList = ['views', 'public']
 const databaseType = ['mongo', 'mysql', 'all']
 
@@ -9,11 +10,15 @@ const databaseType = ['mongo', 'mysql', 'all']
  * @param tgtPath
  * @param database
  * @param backend
+ * @param name
  */
-const operationControl = async (srcPath, tgtPath, database, backend) => {
+const operationControl = async (srcPath, tgtPath, database, backend, name) => {
+  // 1. 文件的修改
+  changePackageJson(path.join(srcPath, 'package.json'), { name: name })
+
   return backend
-    ? cf(srcPath, tgtPath, blackList, { database: databaseType[database] })
-    : cf(srcPath, tgtPath, [], { database: databaseType[database] })
+    ? searchAllFilesAndCopy(srcPath, tgtPath, blackList, { database: databaseType[database] })
+    : searchAllFilesAndCopy(srcPath, tgtPath, [], { database: databaseType[database] })
 }
 
 module.exports = operationControl

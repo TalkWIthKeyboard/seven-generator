@@ -1,6 +1,6 @@
 {
-  "name": "test",
-  "version": "0.1.0",
+  "name": "koa2-demo",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "start": "node src/app.js",
