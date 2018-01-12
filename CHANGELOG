@@ -1,3 +1,6 @@
+# 1.5.0
+1. `koa2` + `redis` 的 `docker-compose` 完成
+
 # 1.4.0
 1. 修复上个版本 `Promise.reject` 的bug
 2. 修改路由结构
