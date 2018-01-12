@@ -1,0 +1,10 @@
+FROM node:8
+MAINTAINER TalkWithKeyboard
+EXPOSE 3000:3000
+
+WORKDIR ~
+COPY . /demo
+WORKDIR /demo
+RUN npm i -g pm2
+
+CMD npm run prd

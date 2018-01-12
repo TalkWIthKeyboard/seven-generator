@@ -1,0 +1,18 @@
+version: "3"
+services:
+
+  redis:
+    build:
+          context: ./
+          dockerfile: RedisDockerfile
+    ports:
+      - "6379"
+
+  app:
+    build:
+      context: ./
+      dockerfile: AppDockerfile
+    links:
+      - redis
+    ports:
+      - "3000:3000"

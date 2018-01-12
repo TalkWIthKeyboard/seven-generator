@@ -5,9 +5,10 @@
   "scripts": {
     "start": "node src/app.js",
     "dev": "NODE_ENV=dev ./node_modules/.bin/nodemon src/app.js",
-    "prd": "pm2 start src/app.js",
+    "prd": "NODE_ENV=production ./node_modules/.bin/nodemon src/app.js",
     "test": "npm run lint",
-    "lint": "./node_modules/.bin/eslint --fix /src"
+    "lint": "./node_modules/.bin/eslint --fix /src",
+    "build": "docker-compose rm --all && docker-compose pull && docker-compose build --no-cache"
   },
   "dependencies": {
     "config": "^1.29.0",
