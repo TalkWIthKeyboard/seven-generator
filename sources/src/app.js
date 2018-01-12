@@ -3,35 +3,35 @@ const config = require('config')
 
 const app = new Koa()
 const views = require('koa-views')
-const json = require('koa-json')
-const onerror = require('koa-onerror')
 const bodyparser = require('koa-bodyparser')
-const logger = require('koa-logger')
+const log4js = require('koa-log4')
+const { httpLog, error } = require('./utils/log4js')
 
 const routes = require('./routes')
 
-// error handler
-onerror(app)
 
 // middlewares
+app.use(async (ctx, next) => {
+  try {
+    await next()
+  } catch (err) {
+    error(err)
+    ctx.body = {
+      message: err.message,
+      stack: err.stack,
+    }
+  }
+})
+
 app.use(bodyparser({
   enableTypes: ['json', 'form', 'text'],
 }))
-app.use(json())
-app.use(logger())
+app.use(log4js.koaLogger(httpLog, { level: 'auto' }))
 app.use(require('koa-static')(`${__dirname}/../public`))
 
 app.use(views(`${__dirname}/../views`, {
   extension: 'pug',
 }))
-
-// logger
-app.use(async (ctx, next) => {
-  const start = new Date()
-  await next()
-  const ms = new Date() - start
-  console.log(`${ctx.method} ${ctx.url} - ${ms}ms`)
-})
 
 // routes
 app.use(routes.routes(), routes.allowedMethods())

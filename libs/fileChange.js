@@ -25,6 +25,6 @@ const changePackageJson = async (sourcePath, option) => {
 }
 
 module.exports = {
-  changePackageJson
+  changePackageJson,
 }
 

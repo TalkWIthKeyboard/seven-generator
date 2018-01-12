@@ -1,6 +1,8 @@
 const path = require('path')
 const { searchAllFilesAndCopy } = require('./copyFile')
+
 const { changePackageJson } = require('./fileChange')
+
 const blackList = ['views', 'public']
 const databaseType = ['mongo', 'mysql', 'all']
 
@@ -14,7 +16,7 @@ const databaseType = ['mongo', 'mysql', 'all']
  */
 const operationControl = async (srcPath, tgtPath, database, backend, name) => {
   // 1. 文件的修改
-  changePackageJson(path.join(srcPath, 'package.json'), { name: name })
+  changePackageJson(path.join(srcPath, 'package.json'), { name })
 
   return backend
     ? searchAllFilesAndCopy(srcPath, tgtPath, blackList, { database: databaseType[database] })

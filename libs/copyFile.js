@@ -43,17 +43,16 @@ const multiplyFilter = (baseName, tgtPath, option) => {
   if (splitList.length > 0) {
     switch (splitList[0]) {
       case 'config':
-          return splitList[1] === option.database
-            ? path.join(dirName, splitList[0])
-            : false
-        break
+        return splitList[1] === option.database
+          ? path.join(dirName, splitList[0])
+          : false
       case '.gitignore':
-          return path.join(dirName, splitList[0])
-        break
+        return path.join(dirName, splitList[0])
       case 'package':
-          return splitList[1] === 'copy.json'
-            ? path.join(dirName, `${splitList[0]}.json`)
-            : false
+        return splitList[1] === 'copy.json'
+          ? path.join(dirName, `${splitList[0]}.json`)
+          : false
+      default:
         break
       // 继续添加规则
     }
@@ -89,7 +88,7 @@ const searchAllFilesAndCopy = async (srcPath, tgtPath, blackList, option) => {
   const afterFilter = multiplyFilter(path.basename(srcPath), tgtPath, option)
   // 文件 直接复制
   if (!fs.statSync(srcPath).isDirectory() && afterFilter) {
-    return copyFile(srcPath, afterFilter)
+    await copyFile(srcPath, afterFilter)
   }
   // 文件夹 创建文件夹,递归复制
   try {
@@ -101,14 +100,14 @@ const searchAllFilesAndCopy = async (srcPath, tgtPath, blackList, option) => {
     } else {
       return
     }
-    for (let index = 0; index < files.length; index++) {
-      await searchAllFilesAndCopy(
-        path.join(srcPath, files[index]),
-        path.join(afterFilter, files[index]),
+    await Promise.map(files, each => {
+      return searchAllFilesAndCopy(
+        path.join(srcPath, each),
+        path.join(afterFilter, each),
         blackList,
         option
       )
-    }
+    })
   } catch (err) {
     throw err
   }
@@ -116,5 +115,5 @@ const searchAllFilesAndCopy = async (srcPath, tgtPath, blackList, option) => {
 
 module.exports = {
   searchAllFilesAndCopy,
-  copyFile
+  copyFile,
 }
