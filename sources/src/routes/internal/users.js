@@ -1,6 +1,6 @@
 const router = require('koa-router')()
 
-const userResponse = ctx => {
+const userResponse = (ctx) => {
   ctx.body = { data: 'this is a users response' }
 }
 

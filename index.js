@@ -3,9 +3,11 @@ const program = require('commander')
 const path = require('path')
 const fs = require('fs')
 const controller = require('./libs/command')
+const p = require('./package.json')
+
 
 program
-  .version('1.0.0')
+  .version(p.version)
   .option('-n, --name [name]', 'The name of this project', 'koa2-demo')
   .option('-d, --database <n>', 'Choose database type (0. mongoDB; 1. mysql; 2. mongoDB + mysql)', parseInt, 0)
   .option('-b, --backend <n>', 'Choose back-end model or full stack model (0. full stack; 1. backend)', parseInt, 1)

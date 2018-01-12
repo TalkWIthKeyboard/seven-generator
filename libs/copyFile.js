@@ -89,6 +89,7 @@ const searchAllFilesAndCopy = async (srcPath, tgtPath, blackList, option) => {
   // 文件 直接复制
   if (!fs.statSync(srcPath).isDirectory() && afterFilter) {
     await copyFile(srcPath, afterFilter)
+    return
   }
   // 文件夹 创建文件夹,递归复制
   try {
@@ -100,10 +101,10 @@ const searchAllFilesAndCopy = async (srcPath, tgtPath, blackList, option) => {
     } else {
       return
     }
-    await Promise.map(files, each => {
+    Promise.map(files, file => {
       return searchAllFilesAndCopy(
-        path.join(srcPath, each),
-        path.join(afterFilter, each),
+        path.join(srcPath, file),
+        path.join(afterFilter, file),
         blackList,
         option
       )
